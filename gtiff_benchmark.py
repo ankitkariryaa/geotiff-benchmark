@@ -104,11 +104,11 @@ if __name__ == '__main__':
                 
                 option_file = os.path.join(tmpdir, option+'.tif')
                 cmd = ['gdal_translate', '-q', base_file, option_file, *config.get(option)]
-                print(" ".join(cmd))
                 if "cog" in option:
                     cmd.extend(["-of","COG"])
                 if "jpeg" in option: # JPEGSetupEncode seems to support only 8 bit only
-                    cmd.extend(["ot","Byte"])
+                    cmd.extend(["-ot","Byte"])
+                print(" ".join(cmd))
                 try:
                     task_clock = perf(cmd=cmd, rep=args.repetitions)
                     file_size = os.stat(option_file).st_size / (1024.0*1024.0)
