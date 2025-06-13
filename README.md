@@ -9,10 +9,18 @@ You can run your own benchmarks using a prepared Docker environment, or just loc
 
 ### Local
 
+#### GDAL install with uv
+
+uv pip install --find-links https://girder.github.io/large_image_wheels gdal pyproj # From https://geospatial.gishub.org/installation/#installing-using-uv
+
 To run the benchmark locally, add the GeoTIFF files you want to benchmark with to the `input_files` 
 directory, and run the benchmark script:
 
     python3 geotiff_benchmark.py
+
+or with uv:
+
+     uv run python geotiff_benchmark.py 
 
 A few notes:
 
