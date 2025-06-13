@@ -40,10 +40,8 @@ def perf(cmd=['sleep','1'], rep=1):
     """
     command = ['perf', 'stat', '-x', '^','-r', str(rep)]
     command.extend(cmd)
-
-    result = subprocess.run(command, stdout=subprocess.PIPE, 
+    result = subprocess.run(command, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
-    
     if result.returncode != 0:
         raise Exception("Running benchmark failed as perf returned a "
                         "non-zero return code. Here are some hints "
@@ -106,7 +104,11 @@ if __name__ == '__main__':
                 
                 option_file = os.path.join(tmpdir, option+'.tif')
                 cmd = ['gdal_translate', '-q', base_file, option_file, *config.get(option)]
-
+                print(" ".join(cmd))
+                if "cog" in option:
+                    cmd.extend(["-of","COG"])
+                if "jpeg" in option: # JPEGSetupEncode seems to support only 8 bit only
+                    cmd.extend(["ot","Byte"])
                 try:
                     task_clock = perf(cmd=cmd, rep=args.repetitions)
                     file_size = os.stat(option_file).st_size / (1024.0*1024.0)
